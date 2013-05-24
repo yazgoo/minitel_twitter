@@ -147,7 +147,7 @@ for tweet in tweets:
 Après avoir uploadé sur l'arduino,
 on a plus qu'à lancer le code client:
 <code>python client.py climagic 3</code>
-Ici, on récupère les 3 dernies tweets de climagic.
+Ici, on récupère les 3 derniers tweets de climagic.
 
 Conclusions
 -----------
