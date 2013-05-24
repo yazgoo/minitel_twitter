@@ -2,7 +2,8 @@ Réalisation du cable
 -----------
 
 En premier lieu, nous avons soudé un connecteur [DIN 45° mâle](http://en.wikipedia.org/wiki/DIN_connector)
-À un câble téléphonique de minitel, que nous avons soudé à des pins, voici le résultat.
+À un câble téléphonique de minitel, que nous avons soudé à des pins, voici un schema:
+![Schema](https://raw.github.com/yazgoo/minitel_twitter/master/din.png)
 
 Branchement de l'arduino
 -----------
