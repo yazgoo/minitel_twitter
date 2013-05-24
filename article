@@ -42,7 +42,7 @@ Utilisation de la bibliothèque
 -----------
 
 J'ai décidé d'utiliser les méthodes d'affichage de texte pour envoyer
-des tweets sur le minitel.
+des tweets sur le minitel, il est disponible [ici](https://github.com/yazgoo/minitel_twitter).
 Je crée donc un nouveau projet, où je copie Minitel.cpp et Minitel.h.
 J'écrit mon fichier principal, minitel.cpp, qui affichera tout texte
 reçu via le série USB:
@@ -99,6 +99,19 @@ void loop()
     demoText();
 }</code></pre>
 
+Voici le makefile correspondant:
+<pre><code>
+MAIN=minitel
+SERIAL_DEVICE=/dev/ttyACM0
+DEPENDENCIES=wiring_analog.c WInterrupts.c wiring_digital.c \
+    wiring_shift.c wiring_pulse.c wiring.c IPAddress.cpp \
+    Stream.cpp Tone.cpp main.cpp CDC.cpp WMath.cpp \
+    WString.cpp Print.cpp USBCore.cpp new.cpp HID.cpp \
+    HardwareSerial.cpp
+LIBRARIES=SoftwareSerial_SoftwareSerial
+include /home/yazgoo/Dévelopement/arduino/arduino_makefile/Makefile
+</code></pre>
+
 Ensuite, je crée le fichier python suivant, qui récupérer
 n tweets et les écrit sur le port série:
 <code><pre>
@@ -115,12 +128,13 @@ num = sys.argv[2]
 handle = urllib_request.urlopen("https://api.twitter.com/1/statuses/user_timeline/" + who + ".json?count=" + num + "&include_rts=1")
 data = handle.read()
 tweets = json.loads(data.decode('utf8'))
+# on ouvre le port série à 1200 bauds
 ser = serial.Serial('/dev/ttyACM0', 1200)
-# pour chaque tweet
+time.sleep(2)
+# pour chaque tweet, on écrit les caractères un par un.
 for tweet in tweets:
     text = tweet['text']
     print(text)
-    time.sleep(2)
     i = 0
     for c in text:
         ser.write(bytes('' + c, 'ISO8859-1'))
@@ -132,3 +146,19 @@ for tweet in tweets:
     ser.write(bytes('\n', 'ISO8859-1'))
     ser.write(bytes('\n', 'ISO8859-1'))
 </code></pre>
+
+Après avoir uploadé sur l'arduino,
+on a plus qu'à lancer le code client:
+<code>python client.py climagic 3</code>
+Ici, on récupère les 3 dernies tweets de climagic.
+
+Conclusions
+-----------
+
+Ce code n'est pas du tout léché et a été réalisé rapidement hier.
+Comme on s'est contenté d'afficher du texte, on aurait pu transmettre
+tout directement en série sans utiliser la bibliothèque Minitel.
+C'est ce qu'ont fait d'autres personnes lors de cet atelier,
+en transmettant directement leur leur tty via agetty sur le minitel.
+Enfin, je vous conseille, si vous êtes sur toulouse, de passer
+au THSF.
