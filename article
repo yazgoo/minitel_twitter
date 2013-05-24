@@ -1,12 +1,3 @@
-Bonjour,
-
-Le [THSF](http://thsf.tetalab.org/) est un rassemblement annuel de [hackerspaces](http://en.wikipedia.org/wiki/Hackerspace).
-Il se tient en ce moment au [myx'art myrys](http://mixart-myrys.org/presentation/), qui héberge le [tetalab](http://thsf.tetalab.org/2013/).
-Durant ce dernier ont lieux des conférences ainsi que des ateliers.
-Hier, un atelier minitel animé par [Jerome Saint-Clair aka 01010101](http://www.saint-clair.net/) a eu lieu
-dans le but d'apprendre à intéragir avec [sa bibliothèque](https://github.com/01010101/Minitel/) en utilisant [arduino](http://arduino.cc/).
-Je vais décrire ce que j'y ai fait:
-
 Réalisation du cable
 -----------
 
@@ -31,10 +22,10 @@ Récupération de la bibliothèque
 
 J'ai récupéré [la bibliothèque](https://github.com/01010101/Minitel/),
 [J'ai modifié le fichier de demo](https://github.com/yazgoo/minitel_twitter/blob/master/demo.cpp)
- pour qu'il builde avec mon Makefile. 
+ pour qu'il builde avec mon Makefile.
 On branche le cable, lui même branché à l'arduino au minitel.
 On crée un projet pour la demo (c.f. Présentation du Makefile),
-et on fait un <code>make upload</code>.
+et on fait un ``make upload``.
 Si ça marche bien, le minitel doit afficher de charmantes démos.
 
 
@@ -46,7 +37,9 @@ des tweets sur le minitel, il est disponible [ici](https://github.com/yazgoo/min
 Je crée donc un nouveau projet, où je copie Minitel.cpp et Minitel.h.
 J'écrit mon fichier principal, minitel.cpp, qui affichera tout texte
 reçu via le série USB:
-<pre><cod>#include "Arduino.h"
+
+```c++
+#include "Arduino.h"
 #include <SoftwareSerial.h>
 #include "Minitel.cpp"
 Minitel* m;
@@ -97,10 +90,12 @@ void demoText() {
 void loop()
 {
     demoText();
-}</code></pre>
+}
+```
 
 Voici le makefile correspondant:
-<pre><code>
+
+```
 MAIN=minitel
 SERIAL_DEVICE=/dev/ttyACM0
 DEPENDENCIES=wiring_analog.c WInterrupts.c wiring_digital.c \
@@ -110,11 +105,12 @@ DEPENDENCIES=wiring_analog.c WInterrupts.c wiring_digital.c \
     HardwareSerial.cpp
 LIBRARIES=SoftwareSerial_SoftwareSerial
 include /home/yazgoo/Dévelopement/arduino/arduino_makefile/Makefile
-</code></pre>
+```
 
 Ensuite, je crée le fichier python suivant, qui récupérer
 n tweets et les écrit sur le port série:
-<code><pre>
+
+```python
 import serial
 import time
 import json
@@ -145,7 +141,7 @@ for tweet in tweets:
         i += 1
     ser.write(bytes('\n', 'ISO8859-1'))
     ser.write(bytes('\n', 'ISO8859-1'))
-</code></pre>
+```
 
 Après avoir uploadé sur l'arduino,
 on a plus qu'à lancer le code client:
